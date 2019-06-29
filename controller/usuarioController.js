@@ -2,7 +2,7 @@ const { handleError } = require('../utils/helpers/expressHelper');
 const jwt = require('../utils/jwt');
 const _ = require('lodash');
 
-async function login(req, res) {
+async function inicioSesion(req, res) {
   const { correo, contrasena } = req.body; 
   const { db } = req.app;
   try {
@@ -135,7 +135,7 @@ async function habilitarUsuario(req, res){
 }
 
 module.exports = {
-  login,
+  inicioSesion,
   crearUsuario,
   editarUsuario,
   listarUsuario,
