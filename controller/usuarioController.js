@@ -23,7 +23,8 @@ async function inicioSesion(req, res) {
     
     const token = jwt.signin({ ...usuario, contrasena: undefined });
     
-    return res.json({token});
+    delete usuario.contrasena;
+    return res.json({ token, usuario });
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json(errorMessage);
