@@ -333,46 +333,24 @@ const roles =[
   }
 ];
 
+const usuarios = [
+  {
+    nombres: 'Jose Luis',
+    apellidos: 'Duran Zarate',
+    genero: 'Masculino',
+    correo: 'jose.com',
+    documentoIdentidad: '75089125',
+    contrasena: '123456',
+    idRol: 1,
+    estado: 1
+  }
+];
+
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
-  await knex('instruction_gradle').del();
-  await knex('department').del();
-  await knex('province').del();
-  await knex('district').del();
-  await knex('range').del();
-  await knex('establishment_type').del();
-  await knex('type_recomendation').del();
-  await knex('recomendation').del();
-  await knex('admin').del();
-  /* await knex('vacation_request').del();
-  await knex('role').del();
-  await knex('role_employee').del();
-  await knex('tool').del();
-  await knex('doc').del();
-  await knex('trip').del();
-  await knex('attendance').del();
-  await knex('justification').del();
-  await knex('suggestion').del();
-  await knex('benefit').del();*/
+  await knex('rol').del();
+  await knex('usuario').del();
   await knex.raw('SET @@SESSION.foreign_key_checks = 1;');
-  await knex('instruction_gradle').insert(instruction_gradle);
-  await knex('department').insert(castDepartmens(departments));
-  await knex('province').insert(castProvinces(provinces));
-  await knex('district').insert(castDistrict(districts));
-  await knex('range').insert(castAltitudes(altitudes));
-  await knex('establishment_type').insert(establishment_type);
-  await knex('type_recomendation').insert(types_recomendation);
-  await knex('recomendation').insert(recomendation);
-  await knex('admin').insert(admin);
-
-  /* await knex('employee').insert(employee);
-  await knex('attendance').insert(attendance);
-  //
-  await knex('trip').insert(trips);
-  await knex('suggestion').insert(suggestions);
-  await knex('role').insert(roles);
-  await knex('tool').insert(tools);
-  await knex('role_employee').insert(role_employee);
-  await knex('vacation_request').insert(vacation_requests);
-  await knex('doc').insert(docs);*/
+  await knex('rol').insert(roles);
+  await knex('usuario').insert(usuarios);
 };

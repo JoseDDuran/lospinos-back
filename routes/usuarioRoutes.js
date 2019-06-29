@@ -5,9 +5,9 @@ const Router = express.Router();
 
 Router.get('/' , usuarioController.listarUsuario);
 Router.post('/agregar', usuarioController.crearUsuario);
-Router.post('/editar', usuarioController.editarUsuario);
-Router.post('/deshabilitar', usuarioController.deshabilitarUsuario);
-Router.post('/habilitar', usuarioController.habilitarUsuario);
-Router.post('/login', usuarioController.login);
+Router.post('/editar/:id', usuarioController.editarUsuario);
+Router.post('/deshabilitar/:id', usuarioController.deshabilitarUsuario);
+Router.post('/habilitar/:id', usuarioController.habilitarUsuario);
+Router.post('/inicioSesion', usuarioController.inicioSesion);
 
 module.exports = Router;

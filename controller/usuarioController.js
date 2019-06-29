@@ -2,7 +2,7 @@ const { handleError } = require('../utils/helpers/expressHelper');
 const jwt = require('../utils/jwt');
 const _ = require('lodash');
 
-async function login(req, res) {
+async function inicioSesion(req, res) {
   const { correo, contrasena } = req.body; 
   const { db } = req.app;
   try {
@@ -23,7 +23,8 @@ async function login(req, res) {
     
     const token = jwt.signin({ ...usuario, contrasena: undefined });
     
-    return res.json({token});
+    delete usuario.contrasena;
+    return res.json({ token, usuario });
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json(errorMessage);
@@ -135,7 +136,7 @@ async function habilitarUsuario(req, res){
 }
 
 module.exports = {
-  login,
+  inicioSesion,
   crearUsuario,
   editarUsuario,
   listarUsuario,
