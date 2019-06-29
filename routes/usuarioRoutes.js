@@ -8,6 +8,6 @@ Router.post('/agregar', usuarioController.crearUsuario);
 Router.post('/editar', usuarioController.editarUsuario);
 Router.post('/deshabilitar', usuarioController.deshabilitarUsuario);
 Router.post('/habilitar', usuarioController.habilitarUsuario);
-Router.post('/inicio-sesion', usuarioController.inicioSesion);
+Router.post('/inicioSesion', usuarioController.inicioSesion);
 
 module.exports = Router;
