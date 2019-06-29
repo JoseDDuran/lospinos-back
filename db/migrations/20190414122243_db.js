@@ -21,6 +21,7 @@ function usuario(table){
   table.string('contrasena').notNullable();
   table.integer('idRol').unsigned().notNullable();
   table.foreign('idRol').references('idRol').inTable('rol');
+  table.boolean('estado');
 }
 
 function tipoHabitacion(table){
