@@ -10,7 +10,7 @@ async function login(req, res) {
              'r.nombre')
           .from('usuario AS u')
           .innerJoin('rol AS r', 'r.idRol', 'u.idRol')
-          .where('u.email', correo)) || {};
+          .where('u.correo', correo)) || {};
     
     
     if(_.isEmpty(usuario)){

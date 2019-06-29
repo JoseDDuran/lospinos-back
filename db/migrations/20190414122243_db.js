@@ -43,6 +43,8 @@ function boletaHabitacion(table){
   table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
   table.integer('idHuespedHabitacion').unsigned().notNullable();
   table.foreign('idHuespedHabitacion').references('idHuespedHabitacion').inTable('huespedHabitacion');
+  table.string('nombre').notNullable();
+  table.string('documentoIdentidad').notNullable();
 }
 
 function estadoBoletaHabitacion(table){
