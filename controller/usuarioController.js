@@ -23,7 +23,7 @@ async function login(req, res) {
     
     const token = jwt.signin({ ...usuario, contrasena: undefined });
     
-    return res.json(token);
+    return res.json({token});
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json(errorMessage);
