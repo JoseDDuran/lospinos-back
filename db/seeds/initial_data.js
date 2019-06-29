@@ -333,6 +333,19 @@ const roles =[
   }
 ];
 
+const usuarios = [
+  {
+    nombres: 'Jose Luis',
+    apellidos: 'Duran Zarate',
+    genero: 'Masculino',
+    correo: 'jose.com',
+    documentoIdentidad: '75089125',
+    contrasena: '123456',
+    idRol: 1,
+    estado: 1
+  }
+];
+
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
   await knex('instruction_gradle').del();
