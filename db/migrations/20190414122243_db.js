@@ -71,7 +71,7 @@ function huesped(table){
 function informe(table){
   table.increments('idInforme').primary();
   table.text('descripcion');
-  table.datetime('fechaRealizacion');
+  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
 
@@ -79,7 +79,7 @@ function informe(table){
 
 function boletaConsumo(table){
   table.increments('idBoletaConsumo').primary();
-  table.datetime('fechaRealizacion').notNullable();
+  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
 }
@@ -104,7 +104,7 @@ function categoria(table){
 function reembolso(table){
   table.increments('idReembolso').primary();
   table.text('descripcion').notNullable();
-  table.datetime('fechaRealizacion').notNullable();
+  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
   table.boolean('estado');

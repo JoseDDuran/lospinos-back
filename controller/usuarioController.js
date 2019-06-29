@@ -14,20 +14,20 @@ async function inicioSesion(req, res) {
     
     
     if(_.isEmpty(usuario)){
-      return res.status(400).json({  message: 'Correo electrónico inválido '});
+      return res.status(400).json({ mensaje: 'Correo electrónico inválido' , estado: 400});
     }
 
     if(usuario.contrasena !== contrasena){
-      return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
+      return res.status(400).json({ mensaje: 'Contraseña incorrecta', estado: 400 });
     }
     
     const token = jwt.signin({ ...usuario, contrasena: undefined });
     
     delete usuario.contrasena;
-    return res.json({ token, usuario });
+    return res.json({ token, usuario, estado: 200 });
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -39,7 +39,7 @@ async function crearUsuario(req, res){
     const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('correo', correo);
     
     if(usuarioBusqueda.length === 0){
-      return res.status(400).json({ mensaje: 'Este correo ya esta registrado con usuario' })
+      return res.status(400).json({ mensaje: 'Este correo ya esta registrado con usuario', estado: 400})
     }
 
     const usuario = db('usuario').insert({
@@ -53,12 +53,12 @@ async function crearUsuario(req, res){
     });
 
     if(usuario.length === 0){
-      return res.status(400).json({ mensaje: 'Error al crear usuario'});
+      return res.status(400).json({ mensaje: 'Error al crear usuario', estado: 400});
     }
-    return res.json({ mensaje: 'Usuario creado correctamente '});
+    return res.json({ mensaje: 'Usuario creado correctamente', estado: 200});
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -71,7 +71,7 @@ async function editarUsuario(req, res){
     const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
     
     if(usuarioBusqueda.length === 0){
-      return res.status(400).json({ mensaje: 'Este usuario no existe' })
+      return res.status(400).json({ mensaje: 'Este usuario no existe', estado: 400})
     }
 
     await db('usuario')
@@ -85,10 +85,10 @@ async function editarUsuario(req, res){
           idRol
         }).where('idUsuario', id);
 
-    return res.json({ mensaje: 'Usuario Editado correctamente '});
+    return res.json({ mensaje: 'Usuario Editado correctamente', estado:200});
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -99,7 +99,7 @@ async function listarUsuario(req, res){
     return res.json(usuarios);
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -112,10 +112,10 @@ async function deshabilitarUsuario(req, res){
           estado : false
         }).where('idUsuario', id);
 
-    return res.json({ mensaje: 'Usuario Deshabilitado correctamente '});
+    return res.json({ mensaje: 'Usuario Deshabilitado correctamente', estado: 200});
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -128,10 +128,10 @@ async function habilitarUsuario(req, res){
           estado : true
         }).where('idUsuario', id);
 
-    return res.json({ mensaje: 'Usuario Habilitado correctamente '});
+    return res.json({ mensaje: 'Usuario Habilitado correctamente', estado: 200});
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json(errorMessage);
+    return res.json({errorMessage, estado: 500});
   }
 }
 
