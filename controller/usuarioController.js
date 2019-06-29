@@ -21,7 +21,7 @@ async function login(req, res) {
       return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
     }
     
-    const token = jwt.signin({ ...usuario, password: undefined });
+    const token = jwt.signin({ ...usuario, contrasena: undefined });
     
     return res.json(token);
   } catch (error) {

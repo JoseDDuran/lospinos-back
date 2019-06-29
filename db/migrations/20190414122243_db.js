@@ -5,12 +5,6 @@ function rol(table){
   table.string('nombre',60);
 }
 
-/*function rolUsuario(){
-  table.increments('idRolUsuario').primary();
-  table.integer('id_instruction_gradle').unsigned().notNullable();
-  table.foreign('id_instruction_gradle').references('id_instruction_gradle').inTable('instruction_gradle');
-}*/
-
 function usuario(table){
   table.increments('idUsuario').primary();
   table.string('nombres', 60).notNullable();
@@ -28,7 +22,6 @@ function tipoHabitacion(table){
   table.increments('idTipoHabitacion').primary();
   table.string('nombre', 60).notNullable();
   table.float('precio').notNullable();
-
 }
 
 function habitacion(table){
