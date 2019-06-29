@@ -6,7 +6,7 @@ async function login(req, res) {
   const { correo, contrasena } = req.body; 
   const { db } = req.app;
   try {
-    const usuario = await (db.select('u.idUsuario', 'u.nombres', 'u.apellidos', 'u.idRol', 'u.contrasena',
+    const usuario = await (db.first('u.idUsuario', 'u.nombres', 'u.apellidos', 'u.idRol', 'u.contrasena',
              'r.nombre')
           .from('usuario AS u')
           .innerJoin('rol AS r', 'r.idRol', 'u.idRol')
@@ -14,7 +14,7 @@ async function login(req, res) {
     
     
     if(_.isEmpty(usuario)){
-      return res.status(400).json({ message: 'Correo electrónico inválido '});
+      return res.status(400).json({  message: 'Correo electrónico inválido '});
     }
 
     if(usuario.contrasena !== contrasena){
