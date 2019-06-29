@@ -41,7 +41,7 @@ function boletaHabitacion(table){
   table.increments('idBoletaHabitacion').primary();
   table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
   table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
-  table.datetime('fechaRealizacion').notNullable();
+  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.string('nombre').notNullable();
   table.string('documentoIdentidad').notNullable();
 }
