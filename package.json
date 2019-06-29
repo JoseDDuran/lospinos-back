@@ -1,0 +1,34 @@
+{
+  "name": "lospinos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "db:migrate:latest": "knex migrate:latest"
+  },
+  "author": "Equipo los Pinos",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "convert-excel-to-json": "^1.6.1",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "knex": "^0.16.3",
+    "knexnest": "^1.0.0",
+    "lodash": "^4.17.11",
+    "md5": "^2.2.1",
+    "moment": "^2.23.0",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "mysql": "^2.16.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
