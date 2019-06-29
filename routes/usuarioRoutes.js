@@ -3,7 +3,7 @@ const usuarioController = require('../controller/usuarioController');
 
 const Router = express.Router();
 
-Router.get('/' ,usuarioController.listarUsuario);
+Router.get('/' , usuarioController.listarUsuario);
 Router.post('/agregar', usuarioController.crearUsuario);
 Router.post('/editar', usuarioController.editarUsuario);
 Router.post('/deshabilitar', usuarioController.deshabilitarUsuario);

@@ -324,6 +324,15 @@ const admin = [
   }
 ]
 
+const roles =[
+  {
+    nombre: 'Administrador'
+  },
+  {
+    empleado: 'Empleado'
+  }
+];
+
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
   await knex('instruction_gradle').del();
