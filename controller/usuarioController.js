@@ -44,13 +44,8 @@ async function cambiarContrasena(req, res){
 
     await db('usuario')
         .update({
-          nombres,
-          apellidos,
-          genero,
-          correo,
-          documentoIdentidad,
           contrasena,
-          idRol
+          flagcontrasena: false,
         }).where('idUsuario', id);
 
     return res.json({ mensaje: 'Usuario Editado correctamente', estado:200});
@@ -132,6 +127,26 @@ async function listarUsuario(req, res){
   }
 }
 
+async function restablecerUsuarioContrasena(req, res){
+  const { db } = req.app;
+  const { id } = req.params;
+  try {
+    const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
+    
+    if(usuarioBusqueda.length === 0){
+      return res.json({ mensaje: 'Este usuario no esta registrado o no existe en el sistema', estado: 200})
+    }
+
+    await db('usuario').update({
+      flagcontrasena: true,
+    }).where('idUsuario', id);
+    return res.json({ mensaje: 'Asignacion de restablecimiento de cuenta realizada correctamente', estado: 200});
+  } catch (error) {
+    const errorMessage = handleError(error);
+    return res.json({errorMessage, estado: 500});
+  }
+}
+
 async function deshabilitarUsuario(req, res){
   const { db } = req.app;
   const { id } = req.params;
@@ -172,4 +187,5 @@ module.exports = {
   deshabilitarUsuario,
   habilitarUsuario,
   cambiarContrasena,
+  restablecerUsuarioContrasena,
 };

@@ -35,7 +35,6 @@ async function buscarHuesped(req, res){
     const { idHuesped } = req.params; 
     const { db } = req.app;
   try {
-
     const huespedBusqueda = await db.first('*').from('huesped').where('idHuesped', idHuesped);
     
     if(huespedBusqueda.length === 0){
