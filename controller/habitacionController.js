@@ -14,7 +14,7 @@ async function listarHabitacion(req,res){
       .where('estadoHabitacion', 'Activo')
       .orderBy('th.plazas', 'DESC');
     } else {
-      habitaciones = await db.select('h.nombre', 'h.precio', 'th.plazas').from('habitacion AS h')
+      habitaciones = await db.select('h.idHabitacion', 'h.nombre', 'h.precio', 'th.plazas').from('habitacion AS h')
       .innerJoin('tipoHabitacion AS th', 'th.idTipoHabitacion', 'h.idTipoHabitacion')
       .where('th.nombre', tipo)
       .where('estadoHabitacion', 'Activo')
