@@ -145,6 +145,7 @@ exports.up = async (knex) => {
       table.integer('dias');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
+      table.boolean('estado').defaultTo(1);
     }),
     knex.schema.createTable('detalleProforma', detalleProforma),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
@@ -204,6 +205,8 @@ exports.down = async (knex) => {
       table.integer('dias');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
+      table.boolean('estado').defaultTo(1);
+
     }),
     knex.schema.createTable('detalleProforma', detalleProforma),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
