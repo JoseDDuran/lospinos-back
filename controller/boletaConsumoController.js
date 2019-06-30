@@ -3,6 +3,7 @@ const jwt = require('../utils/jwt');
 const moment = require('moment');
 const _ = require('lodash');
 
+
 async function generarBoletaConsumo(req, res){
     const { db } = req.app;
     const { documentoIdentidad } = req.body;
@@ -11,11 +12,14 @@ async function generarBoletaConsumo(req, res){
             .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
             .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
             .where('hu.documentoIdentidad', documentoIdentidad)
-            .where('dbh.representante', true)) || {};
+            .where('dbh.representante', true)
+            .where('bh.idEstadoBoletaHabitacion', 1)) || {};
 
-        if(idBoletaHabitacion.length === 0){
-
+        if(_.isEmpty(idBoletaHabitacion)){
+            return res.json({ mensaje: 'No hay boleta generada con este documento de identidad'})
         }
+
+
       const proforma = await db('proforma').insert({
         nombre,
         monto,

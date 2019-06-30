@@ -3,29 +3,25 @@ const jwt = require('../utils/jwt');
 const moment = require('moment');
 const _ = require('lodash');
 
-async function agregarProforma(req,res){
-  const { idEstadoBoletaHabitacion, nombre, documentoIdentidad } = req.body; 
+async function buscarBoletaHabitacion(req, res){
   const { db } = req.app;
+  const { documentoIdentidad } = req.body;
   try {
-    const boletaHabitacion = await (db('boletaHabitacion').insert({
-        idEstadoBoletaHabitacion,
-        nombre,
-        documentoIdentidad,
-        dias
-    }));
-    
-    const fechaFin = 
-    await db('boletaHabitacion').update({
+      const idBoletaHabitacion = await (db.first('bh.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
+      .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
+      .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
+      .where('hu.documentoIdentidad', documentoIdentidad)
+      .where('dbh.representante', true)
+      .where('bh.idEstadoBoletaHabitacion', 1)) || {};
 
-    })
+      if(_.isEmpty(idBoletaHabitacion)){
+          return res.json({ mensaje: 'No hay boleta generada con este documento de identidad', estado: 200 })
+      }
 
-    if(boletaHabitacion.length === 0){
-        return res.status(400).json({ mensaje: 'Error al crear proforma'});
-    }
-    return res.json({ mensaje: 'Proforma creada correctamente', id:boletaHabitacion[0] });
-  } catch (error) {
-    const errorMessage = handleError(error);
-    return res.json(errorMessage);
+      return res.json({ idBoletaHabitacion, estado: 200 });
+  } catch(error){
+      const errorMessage = handleError(error);
+      return res.json({errorMessage, estado: 500});
   }
 }
 
@@ -85,14 +81,14 @@ async function anularProforma(req, res) {
   const { db } = req.app;
   try {
     
-    const proforma = await db.first('*').from('proforma')
+    const proforma = await (db.first('*').from('proforma')
       .where('idProforma', id)
-      .where('estado', true);
+      .where('estado', true)) || { };
 
-    if(proforma.length === 0){
+    if(_.isEmpty(proforma)){
       return res.json({ mensaje:'Esta proforma no existe', estado: 400})
     }
-  
+    
     await db('proforma')
       .update({
         estado: false
@@ -128,6 +124,9 @@ async function procesarProforma(req, res){
       fechaFin,
     });
 
+    const boletaConsumo = await db('boletaConsumo').insert({
+      idBoletaHabitacion: boletaHabitacion[0];
+    });
     if(boletaHabitacion.length === 0){
       return res.json({ mensaje:'Error al crear la boleta', estado: 400})
     }
@@ -174,4 +173,5 @@ module.exports = {
     guardarProforma,
     anularProforma,
     procesarProforma,
+    buscarBoletaHabitacion,
 };
