@@ -5,6 +5,7 @@ const boletaHabitacionRoutes= require('./boletaHabitacion.Routes')
 const habitacionRoutes = require('./habitacion.Routes');
 const productoRoutes = require('./productoRoutes');
 const huespedRoutes = require('./huespedRoutes');
+const boletaConsumoRoutes = require('./boletaConsumoRoutes');
 
 
 const Router = express.Router();
@@ -16,5 +17,6 @@ Router.use('/proforma',boletaHabitacionRoutes);
 Router.use('/habitacion',habitacionRoutes);
 Router.use('/producto', productoRoutes)
 Router.use('/huesped', huespedRoutes);
+Router.use('/consumo', boletaConsumoRoutes);
 
 module.exports = Router;

@@ -30,19 +30,6 @@ async function buscarBoletaHabitacion(req, res){
   }
 }
 
-async function buscarBoleta(req,res){
-  const { idBoletaHabitacion } = req.body; 
-  const { db } = req.app;
-  try {
-    const boletaHabitacion = await db.select('*').from('boletaHabitacion')
-      .where('idBoletaHabitacion', idBoletaHabitacion );
-    return res.json(boletaHabitacion);
-  } catch (error) {
-    const errorMessage = handleError(error);
-    return res.json({ errorMessage, estado: 500});
-  }
-}
-
 async function guardarProforma(req, res) {
   const { monto, dias, documentoIdentidad, nombre, habitaciones } = req.body; 
   const { db } = req.app;
@@ -169,6 +156,31 @@ async function procesarProforma(req, res){
     });
     
     return res.json({ mensaje: 'Boleta creada correctamente', estado: 200})
+  } catch (error) {
+    const errorMessage = handleError(error);
+    return res.json({errorMessage, estado: 500});
+  }
+}
+
+async function finalizarBoletaHabitacion(req, res){
+  const { id } = req.params; 
+  const { db } = req.app;
+  try {
+    
+    const proforma = await (db.first('*').from('boletaHabitacion')
+      .where('idBoletaHabitacion', id)
+      .where('estado', true)) || {};
+
+    if(_.isEmpty(proforma)){
+      return res.json({ mensaje:'Esta proforma no existe', estado: 400})
+    }
+
+    await db('proforma')
+      .update({
+        estado: false
+      }).where('idProforma', id)
+    
+    return res.json({ mensaje: 'Proforma anulada correctamente', estado: 200})
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
