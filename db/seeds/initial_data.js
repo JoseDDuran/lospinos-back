@@ -127,6 +127,7 @@ exports.seed = async (knex) => {
   await knex('categoria').del();
   await knex('estadoBoletaHabitacion').del();
   await knex('tipoHabitacion').del();
+  await knex('habitacion').del();
   await knex.raw('SET @@SESSION.foreign_key_checks = 1;');
   await knex('rol').insert(roles);
   await knex('usuario').insert(usuarios);
@@ -134,4 +135,5 @@ exports.seed = async (knex) => {
   await knex('producto').insert(productos);
   await knex('estadoBoletaHabitacion').insert(estado_boleta_habitacion);
   await knex('tipoHabitacion').insert(tipo_habitacion);
+  await knex('habitacion').insert(habitaciones);
 };
