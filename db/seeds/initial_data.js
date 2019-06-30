@@ -31,10 +31,12 @@ const categoria = [
 ];
 
 const roles =[
-  {
+  { 
+    idRol: 1,
     nombre: 'Administrador'
   },
   {
+    idRol: 2,
     nombre: 'Empleado'
   }
 ];
