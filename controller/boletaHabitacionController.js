@@ -88,7 +88,7 @@ async function anularProforma(req, res) {
     if(_.isEmpty(proforma)){
       return res.json({ mensaje:'Esta proforma no existe', estado: 400})
     }
-    
+
     await db('proforma')
       .update({
         estado: false
@@ -125,7 +125,7 @@ async function procesarProforma(req, res){
     });
 
     const boletaConsumo = await db('boletaConsumo').insert({
-      idBoletaHabitacion: boletaHabitacion[0];
+      idBoletaHabitacion: boletaHabitacion[0]
     });
     if(boletaHabitacion.length === 0){
       return res.json({ mensaje:'Error al crear la boleta', estado: 400})

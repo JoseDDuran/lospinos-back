@@ -3,7 +3,6 @@ const jwt = require('../utils/jwt');
 const moment = require('moment');
 const _ = require('lodash');
 
-
 async function generarBoletaConsumo(req, res){
     const { db } = req.app;
     const { documentoIdentidad } = req.body;
