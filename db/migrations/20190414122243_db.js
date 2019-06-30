@@ -23,11 +23,13 @@ function tipoHabitacion(table){
   table.string('nombre', 60).notNullable();
 }
 
+
 function habitacion(table){
   table.increments('idHabitacion').primary();
   table.string('nombre', 60).notNullable();
   table.float('precio');
   table.integer('nPersonas');
+  table.enu('estadoHabitacion', ['Activo', 'Inactivo', 'En limpieza']).defaultTo('Activo');
 }
 
 function detalleBoletaHabitacion(table){
