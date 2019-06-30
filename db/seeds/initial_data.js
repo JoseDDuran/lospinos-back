@@ -54,15 +54,32 @@ const usuarios = [
   }
 ];
 
+const estado_boleta_habitacion = [
+  {
+    idEstadoBoletaHabitacion: 1,
+    nombre: 'pendiente'
+  },
+  {
+    idEstadoBoletaHabitacion: 2,
+    nombre: 'anulado'
+  },
+  {
+    idEstadoBoletaHabitacion: 3,
+    nombre: 'confirmado'
+  },
+];
+
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
   await knex('rol').del();
   await knex('usuario').del();
   await knex('producto').del();
   await knex('categoria').del();
+  await knex('estadoBoletaHabitacion').del();
   await knex.raw('SET @@SESSION.foreign_key_checks = 1;');
   await knex('rol').insert(roles);
   await knex('usuario').insert(usuarios);
   await knex('categoria').insert(categoria);
   await knex('producto').insert(productos);
+  await knex('estadoBoletaHabitacion').insert(estado_boleta_habitacion);
 };
