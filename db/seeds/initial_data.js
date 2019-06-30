@@ -329,7 +329,7 @@ const roles =[
     nombre: 'Administrador'
   },
   {
-    empleado: 'Empleado'
+    nombre: 'Empleado'
   }
 ];
 
