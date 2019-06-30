@@ -1,5 +1,5 @@
 const express = require('express');
-const boletaHabitacionControllers = require('../controller/boletaHabitacion');
+const boletaHabitacionControllers = require('../controller/boletaHabitacionController');
 
 const Router = express.Router();
 
