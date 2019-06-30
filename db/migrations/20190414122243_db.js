@@ -21,14 +21,13 @@ function usuario(table){
 function tipoHabitacion(table){
   table.increments('idTipoHabitacion').primary();
   table.string('nombre', 60).notNullable();
-  table.float('precio').notNullable();
 }
 
 function habitacion(table){
   table.increments('idHabitacion').primary();
   table.string('nombre', 60).notNullable();
-  table.integer('idTipoHabitacion').unsigned().notNullable();
-  table.foreign('idTipoHabitacion').references('idTipoHabitacion').inTable('tipoHabitacion');
+  table.float('precio');
+  table.integer('nPersonas');
 }
 
 function detalleBoletaHabitacion(table){
@@ -94,6 +93,8 @@ function producto(table){
   table.increments('idProducto').primary();
   table.string('nombre').notNullable();
   table.float('precio').notNullable();
+  table.integer('idCategoria').unsigned().notNullable();
+  table.foreign('idCategoria').references('idCategoria').inTable('categoria');
 }
 
 function categoria(table){
@@ -114,7 +115,6 @@ exports.up = async (knex) => {
   await Promise.all([
     knex.schema.createTable('rol', rol),
     knex.schema.createTable('usuario', usuario),
-    knex.schema.createTable('tipoHabitacion', tipoHabitacion),
     knex.schema.createTable('habitacion', habitacion),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
     knex.schema.createTable('boletaHabitacion', function boletaHabitacion(table){
@@ -163,7 +163,6 @@ exports.down = async (knex) => {
     knex.raw('SET foreign_key_checks = 0;'),
     knex.schema.createTable('rol', rol),
     knex.schema.createTable('usuario', usuario),
-    knex.schema.createTable('tipoHabitacion', tipoHabitacion),
     knex.schema.createTable('habitacion', habitacion),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
     knex.schema.createTable('boletaHabitacion', function boletaHabitacion(table){
@@ -173,7 +172,7 @@ exports.down = async (knex) => {
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
-    }),
+    } ),
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
     knex.schema.createTable('huesped', huesped),
