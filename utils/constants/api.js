@@ -8,7 +8,9 @@ const protectedRoutes = [
     '/usuario/',
 
     '/producto/',
-    '/producto/categorias'
+    '/producto/categorias',
+
+    '/habitacion/'
 ];
 const mixedRoutes = [];
 

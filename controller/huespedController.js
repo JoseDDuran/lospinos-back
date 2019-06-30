@@ -6,25 +6,7 @@ async function inicioSesion(req, res) {
   const { correo, contrasena } = req.body; 
   const { db } = req.app;
   try {
-    const usuario = await (db.first('u.idUsuario', 'u.nombres', 'u.apellidos', 'u.idRol', 'u.contrasena',
-             'r.nombre')
-          .from('usuario AS u')
-          .innerJoin('rol AS r', 'r.idRol', 'u.idRol')
-          .where('u.correo', correo)) || {};
-    
-    
-    if(_.isEmpty(usuario)){
-      return res.json({ mensaje: 'Correo electrónico inválido' , estado: 400});
-    }
-
-    if(usuario.contrasena !== contrasena){
-      return res.json({ mensaje: 'Contraseña incorrecta', estado: 400 });
-    }
-    
-    const token = jwt.signin({ ...usuario, contrasena: undefined });
-    
-    delete usuario.contrasena;
-    return res.json({ token, usuario, estado: 200 });
+    const huesped = await db('huesped')
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
