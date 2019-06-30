@@ -34,11 +34,11 @@ async function crearHuesped(req, res){
 }
 
 async function buscarHuesped(req, res){
-    const { documentoIdentidad } = req.params; 
+    const { id } = req.params; 
     const { db } = req.app;
   try {
     const huespedBusqueda = await (db.first('*').from('huesped')
-        .where('documentoIdentidad', documentoIdentidad)) || {};
+        .where('documentoIdentidad', id)) || {};
     
     if(_.isEmpty(huespedBusqueda)){
       return res.json({ mensaje: 'Este huesped no esta registrado en el sistema', estado: 200})
