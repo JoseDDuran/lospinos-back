@@ -130,12 +130,6 @@ const role_employee = [
   },
 ];
 
-const roles = [
-  {
-    name: 'Diseñador',
-  },
-];
-
 const tools = [
   {
     name: 'invision',
