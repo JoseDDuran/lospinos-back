@@ -61,6 +61,6 @@ exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 1;');
   await knex('rol').insert(roles);
   await knex('usuario').insert(usuarios);
-  await knex('producto').insert(productos);
   await knex('categoria').insert(categoria);
+  await knex('producto').insert(productos);
 };
