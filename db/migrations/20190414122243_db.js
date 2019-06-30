@@ -55,6 +55,9 @@ function detalleBoletaHabitacion(table){
   table.increments('idDetalleBoletaHabitacion').primary();
   table.integer('idHabitacion').unsigned().notNullable();
   table.foreign('idHabitacion').references('idHabitacion').inTable('habitacion');
+  table.integer('idBoletaHabitacion').unsigned().notNullable();
+  table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
+  table.boolean('representante');
 }
 
 function boletaHabitacion(table){
@@ -96,7 +99,6 @@ function informe(table){
   table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-
 }
 
 function boletaConsumo(table){
@@ -110,6 +112,8 @@ function detalleBoletaConsumo(table){
   table.increments('idDetalleBoletaConsumo').primary();
   table.integer('idBoletaConsumo').unsigned().notNullable();
   table.foreign('idBoletaConsumo').references('idBoletaConsumo').inTable('boletaConsumo');
+  table.string('descripcion');
+  table.string('monto');
 }
 
 function producto(table){
@@ -156,11 +160,9 @@ exports.up = async (knex) => {
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
-      table.datetime('fechaRealizacion').defaultTo();
+      table.date('fechaRealizacion').defaultTo();
       table.integer('dias');
-      table.datetime('fechaFin');
-      table.string('nombre').notNullable();
-      table.string('documentoIdentidad').notNullable();
+      table.date('fechaFin');
     }),
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),

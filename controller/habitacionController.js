@@ -28,6 +28,19 @@ async function listarHabitacion(req,res){
   }
 }
 
+
+async function listarTodasHabitaciones(req,res){
+  const { db } = req.app;
+  try { 
+   const habitaciones = await db.select('*').from('habitacion');
+    return res.json({habitaciones, estado: 200 });
+  } catch (error) {
+    const errorMessage = handleError(error);
+    return res.json({ errorMessage, estado: 500 });
+  }
+}
+
 module.exports = {
-  listarHabitacion
+  listarHabitacion,
+  listarTodasHabitaciones
 };

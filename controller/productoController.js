@@ -17,15 +17,15 @@ async function listarProductos(req, res) {
 async function listarCategorias(req, res) {
     const { db } = req.app;
     try {
-      const categoria = await db.select('*').from('categoria');
-      
-      return res.json({ categoria, estado: 200 });
+        const categoria = await db.select('*').from('categoria');
+        
+        return res.json({ categoria, estado: 200 });
     } catch (error) {
-      const errorMessage = handleError(error);
-      return res.json({errorMessage, estado: 500});
+        const errorMessage = handleError(error);
+        return res.json({errorMessage, estado: 500});
     }
-  }
-  
+    }
+
 
 module.exports = {
   listarProductos,
