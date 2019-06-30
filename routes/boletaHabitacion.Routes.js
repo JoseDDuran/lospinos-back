@@ -3,8 +3,8 @@ const boletaHabitacionControllers = require('../controller/boletaHabitacionContr
 
 const Router = express.Router();
 
-Router.post('/agregar', boletaHabitacionControllers.agregarProforma);
-Router.post('/listar', boletaHabitacionControllers.listarProforma)
+/*Router.post('/agregar', boletaHabitacionControllers.agregarProforma);
+Router.post('/listar', boletaHabitacionControllers.listarProforma)*/
 
 
 module.exports = Router;
