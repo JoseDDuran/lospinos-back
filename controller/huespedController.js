@@ -11,7 +11,7 @@ async function crearHuesped(req, res){
     const huespedBusqueda = await (db.first('idHuesped').from('huesped')
         .where('documentoIdentidad', documentoIdentidad)) || {};
 
-    if(_.isEmpty(huespedBusqueda)){
+    if(!_.isEmpty(huespedBusqueda)){
       return res.json({ mensaje: 'Este huesped ya esta registrado en el sistema', estado: 200})
     }
 
