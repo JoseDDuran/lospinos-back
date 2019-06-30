@@ -57,16 +57,12 @@ const usuarios = [
 const estado_boleta_habitacion = [
   {
     idEstadoBoletaHabitacion: 1,
-    nombre: 'pendiente'
+    nombre: 'En curso'
   },
   {
     idEstadoBoletaHabitacion: 2,
-    nombre: 'anulado'
-  },
-  {
-    idEstadoBoletaHabitacion: 3,
-    nombre: 'confirmado'
-  },
+    nombre: 'Expirada'
+  }
 ];
 
 const tipo_habitacion = [
@@ -118,7 +114,7 @@ const habitaciones = [
     precio: 80,
     idTipoHabitacion: 1,
   }
-]
+];
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
   await knex('rol').del();
