@@ -6,6 +6,9 @@ const protectedRoutes = [
     '/usuario/deshabilitar',
     '/usuario/habilitar',
     '/usuario/',
+
+    '/producto/',
+    '/producto/categorias'
 ];
 const mixedRoutes = [];
 

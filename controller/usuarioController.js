@@ -14,11 +14,11 @@ async function inicioSesion(req, res) {
     
     
     if(_.isEmpty(usuario)){
-      return res.status(400).json({ mensaje: 'Correo electrónico inválido' , estado: 400});
+      return res.json({ mensaje: 'Correo electrónico inválido' , estado: 400});
     }
 
     if(usuario.contrasena !== contrasena){
-      return res.status(400).json({ mensaje: 'Contraseña incorrecta', estado: 400 });
+      return res.json({ mensaje: 'Contraseña incorrecta', estado: 400 });
     }
     
     const token = jwt.signin({ ...usuario, contrasena: undefined });
@@ -39,7 +39,7 @@ async function crearUsuario(req, res){
     const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('correo', correo);
     
     if(usuarioBusqueda.length === 0){
-      return res.status(400).json({ mensaje: 'Este correo ya esta registrado con usuario', estado: 400})
+      return res.json({ mensaje: 'Este correo ya esta registrado con usuario', estado: 400})
     }
 
     const usuario = db('usuario').insert({
@@ -53,7 +53,7 @@ async function crearUsuario(req, res){
     });
 
     if(usuario.length === 0){
-      return res.status(400).json({ mensaje: 'Error al crear usuario', estado: 400});
+      return res.json({ mensaje: 'Error al crear usuario', estado: 400});
     }
     return res.json({ mensaje: 'Usuario creado correctamente', estado: 200});
   } catch (error) {
@@ -71,7 +71,7 @@ async function editarUsuario(req, res){
     const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
     
     if(usuarioBusqueda.length === 0){
-      return res.status(400).json({ mensaje: 'Este usuario no existe', estado: 400})
+      return res.json({ mensaje: 'Este usuario no existe', estado: 400})
     }
 
     await db('usuario')
