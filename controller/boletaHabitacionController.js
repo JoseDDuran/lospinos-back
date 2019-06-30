@@ -7,7 +7,7 @@ async function buscarBoletaHabitacion(req, res){
   const { db } = req.app;
   const { documentoIdentidad } = req.body;
   try {
-      const idBoletaHabitacion = await (db.first('bh.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
+      const boletaHabitacion = await (db.first('bh.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
       .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
       .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
       .where('hu.documentoIdentidad', documentoIdentidad)
@@ -18,7 +18,12 @@ async function buscarBoletaHabitacion(req, res){
           return res.json({ mensaje: 'No hay boleta generada con este documento de identidad', estado: 200 })
       }
 
-      return res.json({ idBoletaHabitacion, estado: 200 });
+      const detalleBoletaConsumo = await db.first('bc.idBoletaConsumo', 'dbc.descripcion',
+         'dbc.monto').from('boletaConsumo AS bc')
+        .innerJoin('detalleBoletaConsumo AS dbc', 'dbc.idBoletaConsumo', 'bc.idBoletaConsumo')
+        .where('bc.idBoletaHabitacion', boletaHabitacion.idBoletaHabitacion)
+
+      return res.json({ detalleBoletaConsumo, estado: 200 });
   } catch(error){
       const errorMessage = handleError(error);
       return res.json({errorMessage, estado: 500});
@@ -127,6 +132,7 @@ async function procesarProforma(req, res){
     const boletaConsumo = await db('boletaConsumo').insert({
       idBoletaHabitacion: boletaHabitacion[0]
     });
+
     if(boletaHabitacion.length === 0){
       return res.json({ mensaje:'Error al crear la boleta', estado: 400})
     }

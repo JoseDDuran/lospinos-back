@@ -8,8 +8,10 @@ async function crearHuesped(req, res){
     const { db } = req.app;
   try {
 
-    const huespedBusqueda = await db.first('idHuesped').from('huesped').where('documentoIdentidad', documentoIdentidad );
-    if(huespedBusqueda.length === 0){
+    const huespedBusqueda = await (db.first('idHuesped').from('huesped')
+        .where('documentoIdentidad', documentoIdentidad)) || {};
+
+    if(_.isEmpty(huespedBusqueda)){
       return res.json({ mensaje: 'Este huesped ya esta registrado en el sistema', estado: 200})
     }
 
@@ -35,9 +37,10 @@ async function buscarHuesped(req, res){
     const { idHuesped } = req.params; 
     const { db } = req.app;
   try {
-    const huespedBusqueda = await db.first('*').from('huesped').where('idHuesped', idHuesped);
+    const huespedBusqueda = await (db.first('*').from('huesped')
+        .where('idHuesped', idHuesped)) || {};
     
-    if(huespedBusqueda.length === 0){
+    if(_.isEmpty(huespedBusqueda)){
       return res.json({ mensaje: 'Este huesped no esta registrado en el sistema', estado: 200})
     }
 

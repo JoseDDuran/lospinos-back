@@ -5,43 +5,32 @@ const _ = require('lodash');
 
 async function generarBoletaConsumo(req, res){
     const { db } = req.app;
-    const { documentoIdentidad } = req.body;
+    const { idBoletaConsumo, detalles } = req.body;
     try {
-        const idBoletaHabitacion = await (db.first('bh.idBoletaHabitacion').from('detalleBoletaHabitacion AS dbh')
-            .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
-            .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
-            .where('hu.documentoIdentidad', documentoIdentidad)
-            .where('dbh.representante', true)
-            .where('bh.idEstadoBoletaHabitacion', 1)) || {};
+        const boletaConsumoBusqueda = await (db.first('*').from('boletaConsumo')
+            .where('idBoletaConsumo', idBoletaConsumo)) || {};
 
-        if(_.isEmpty(idBoletaHabitacion)){
-            return res.json({ mensaje: 'No hay boleta generada con este documento de identidad'})
+        if(_.isEmpty(boletaConsumoBusqueda)){
+            return res.json({ mensaje: 'No existe esta boleta consumo', estado: 400})
         }
 
+        const detalleBoletaConsumo = detalles.map(det => {
+            return {
+                idBoletaConsumo,
+                descripcion: det.descripcion,
+                monto: det.monto
+            }
+        });
 
-      const proforma = await db('proforma').insert({
-        nombre,
-        monto,
-        dias,
-        documentoIdentidad,
-      });
-    
-      const detalleProforma = habitaciones.map(hab => {
-        return {
-          idHabitacion: hab.idHabitacion,
-          idProforma: proforma[0],
-        }
-      });
-  
       db.transaction((trx) => {
-        db.insert(detalleProforma)
-          .into('detalleProforma')
+        db.insert(detalleBoletaConsumo)
+          .into('detalleBoletaConsumo')
           .transacting(trx)
           .then(trx.commit)
           .catch(trx.rollback);
       })
       .then((inserts) => {
-        return res.json({ message: 'Proforma creada correctamente' , status: 200, idProforma: proforma[0] });
+        return res.json({ message: 'Detalle agregado correctamente' , status: 200 });
       })
       .catch((error) => {
         return res.json({ message: 'Error al crear la proforma', status: 400});
@@ -183,4 +172,5 @@ module.exports = {
     guardarProforma,
     anularProforma,
     procesarProforma,
+    generarBoletaConsumo,
 };
