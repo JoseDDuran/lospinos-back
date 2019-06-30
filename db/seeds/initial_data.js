@@ -90,6 +90,34 @@ const tipo_habitacion = [
     nombre: 'Duplex',
     plazas: 2,
   },
+];
+
+const habitaciones = [
+  {
+    nombre: 'Habitacion 1',
+    precio: 50,
+    idTipoHabitacion: 2,
+  },
+  {
+    nombre: 'Habitacion 2',
+    precio: 80,
+    idTipoHabitacion: 1,
+  },
+  {
+    nombre: 'Habitacion 3',
+    precio: 50,
+    idTipoHabitacion: 3,
+  },
+  {
+    nombre: 'Habitacion 4',
+    precio: 50,
+    idTipoHabitacion: 4,
+  },
+  {
+    nombre: 'Habitacion 5',
+    precio: 80,
+    idTipoHabitacion: 1,
+  }
 ]
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');

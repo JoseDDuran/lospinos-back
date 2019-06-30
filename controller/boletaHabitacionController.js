@@ -42,16 +42,6 @@ async function listarProforma(req,res){
   }
 }
 
-async function buscarBoletaPorDNI(req, res){
-  const { db } = req.app;
-  try{
-    const boleta = await db.first('')
-  } catch (error) {
-    const errorMessage = handleError(error);
-    return res.json({errorMessage, estado: 500});
-  }
-}
-
 async function guardarProforma(req, res) {
   const { monto, dias, documentoIdentidad, nombre, habitaciones } = req.body; 
   const { db } = req.app;
@@ -81,12 +71,8 @@ async function guardarProforma(req, res) {
         return res.json({ message: 'Proforma creada correctamente' , status: 200, idProforma: proforma[0] });
       })
       .catch((error) => {
-        return res.status(400).json({ message: 'Error al crear la proforma' });
+        return res.json({ message: 'Error al crear la proforma', status: 400});
       });
-    const boletaHabitacion = await db.select('*').from('boletaHabitacion')
-      .where('idBoletaHabitacion', idBoletaHabitacion );
-
-    return res.json(boletaHabitacion);
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
@@ -94,8 +80,5 @@ async function guardarProforma(req, res) {
 }
 
 module.exports = {
-    agregarProforma,
-    listarProforma,
-    procesarProforma,
-    buscarBoletaPorDNI,
+    guardarProforma,
 };
