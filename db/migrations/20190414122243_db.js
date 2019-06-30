@@ -145,6 +145,7 @@ exports.up = async (knex) => {
       table.increments('idProforma').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
       table.integer('dias');
+      table.float('monto');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
       table.boolean('estado').defaultTo(1);
@@ -205,6 +206,7 @@ exports.down = async (knex) => {
       table.increments('idProforma').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
       table.integer('dias');
+      table.float('monto');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
       table.boolean('estado').defaultTo(1);
