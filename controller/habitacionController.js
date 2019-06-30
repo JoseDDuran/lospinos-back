@@ -8,8 +8,8 @@ async function listarHabitacion(req,res){
   try {
     const habitaciones = await db.select('*').from('habitacion AS h')
     .innerJoin('tipoHabitacion AS th', 'th.idTipoHabitacion', 'h.idTipoHabitacion')
-    .where('h.nombre', tipo)
-    .where('h.plazas', plazas)
+    .where('th.nombre', tipo)
+    .where('th.plazas', plazas)
     .where('estadoHabitacion', 'Activo');
     return res.json(habitaciones);
   } catch (error) {
