@@ -69,6 +69,28 @@ const estado_boleta_habitacion = [
   },
 ];
 
+const tipo_habitacion = [
+  { 
+    idTipoHabitacion: 1,
+    nombre: 'Normal',
+    plazas: 1,
+  },
+  { 
+    idTipoHabitacion: 2,
+    nombre: 'Normal',
+    plazas: 2,
+  },
+  { 
+    idTipoHabitacion: 3,
+    nombre: 'Duplex',
+    plazas: 1,
+  },
+  { 
+    idTipoHabitacion: 4,
+    nombre: 'Duplex',
+    plazas: 2,
+  },
+]
 exports.seed = async (knex) => {
   await knex.raw('SET @@SESSION.foreign_key_checks = 0;');
   await knex('rol').del();
@@ -76,10 +98,12 @@ exports.seed = async (knex) => {
   await knex('producto').del();
   await knex('categoria').del();
   await knex('estadoBoletaHabitacion').del();
+  await knex('tipoHabitacion').del();
   await knex.raw('SET @@SESSION.foreign_key_checks = 1;');
   await knex('rol').insert(roles);
   await knex('usuario').insert(usuarios);
   await knex('categoria').insert(categoria);
   await knex('producto').insert(productos);
   await knex('estadoBoletaHabitacion').insert(estado_boleta_habitacion);
+  await knex('tipoHabitacion').insert(tipo_habitacion);
 };

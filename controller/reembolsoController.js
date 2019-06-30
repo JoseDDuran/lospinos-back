@@ -2,9 +2,14 @@ const { handleError } = require('../utils/helpers/expressHelper');
 const jwt = require('../utils/jwt');
 const _ = require('lodash');
 
-async function listarProductos(req, res) {
+async function solicitarReembolso(req, res) {
   const { db } = req.app;
+  const { descripcion, idBoletaHabitacion } = req.body;
   try {
+    const reembolso = await db('reembolso').insert({
+        nombres,
+        apellidos,
+      });
     const productos = await db.select('*').from('producto');
     
     return res.json({ productos, estado: 200 });
@@ -17,7 +22,7 @@ async function listarProductos(req, res) {
 async function listarCategorias(req, res) {
     const { db } = req.app;
     try {
-      const categoria = await db.select('*').from('categoria');
+      const productos = await db.select('*').from('categoria');
       
       return res.json({ categoria, estado: 200 });
     } catch (error) {
@@ -28,6 +33,6 @@ async function listarCategorias(req, res) {
   
 
 module.exports = {
-  listarProductos,
-  listarCategorias
+    solicitarReembolso,
+    listarCategorias
 };

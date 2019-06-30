@@ -18,18 +18,36 @@ function usuario(table){
   table.boolean('estado');
 }
 
+function proforma(table){
+  table.increments('idProforma').primary();
+  table.date('fechaRealizacion').defaultTo(knex.fn.now());
+  table.integer('dias');
+  table.string('nombre').notNullable();
+  table.float('monto');
+  table.string('documentoIdentidad').notNullable();
+}
+
+function detalleProforma(table){
+  table.increments('idDetalleProforma').primary();
+  table.integer('idHabitacion').unsigned().notNullable();
+  table.foreign('idHabitacion').references('idHabitacion').inTable('habitacion');
+  table.integer('idProforma').unsigned().notNullable();
+  table.foreign('idProforma').references('idProforma').inTable('proforma');
+}
+
 function tipoHabitacion(table){
   table.increments('idTipoHabitacion').primary();
   table.string('nombre', 60).notNullable();
+  table.integer('plazas');
 }
-
 
 function habitacion(table){
   table.increments('idHabitacion').primary();
   table.string('nombre', 60).notNullable();
   table.float('precio');
-  table.integer('nPersonas');
   table.enu('estadoHabitacion', ['Activo', 'Inactivo', 'En limpieza']).defaultTo('Activo');
+  table.integer('idTipoHabitacion').unsigned().notNullable();
+  table.foreign('idTipoHabitacion').references('idTipoHabitacion').inTable('tipoHabitacion');
 }
 
 function detalleBoletaHabitacion(table){
@@ -43,8 +61,9 @@ function boletaHabitacion(table){
   table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
   table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
   table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-  table.string('nombre').notNullable();
-  table.string('documentoIdentidad').notNullable();
+  table.integer('dias');
+  table.float('monto');
+  table.datetime('fechaFin');
 }
 
 function estadoBoletaHabitacion(table){
@@ -107,23 +126,35 @@ function categoria(table){
 function reembolso(table){
   table.increments('idReembolso').primary();
   table.text('descripcion').notNullable();
+  table.float('monto');
   table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-  table.boolean('estado');
+  table.boolean('estado').defaultTo(1);
 }
 
 exports.up = async (knex) => {
   await Promise.all([
     knex.schema.createTable('rol', rol),
     knex.schema.createTable('usuario', usuario),
+    knex.schema.createTable('tipoHabitacion', tipoHabitacion),
     knex.schema.createTable('habitacion', habitacion),
+    knex.schema.createTable('proforma', function (table){
+      table.increments('idProforma').primary();
+      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
+      table.integer('dias');
+      table.string('nombre').notNullable();
+      table.string('documentoIdentidad').notNullable();
+    }),
+    knex.schema.createTable('detalleProforma', detalleProforma),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
     knex.schema.createTable('boletaHabitacion', function (table){
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
+      table.datetime('fechaRealizacion').defaultTo();
+      table.integer('dias');
+      table.datetime('fechaFin');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
     }),
@@ -165,13 +196,22 @@ exports.down = async (knex) => {
     knex.raw('SET foreign_key_checks = 0;'),
     knex.schema.createTable('rol', rol),
     knex.schema.createTable('usuario', usuario),
+    knex.schema.createTable('tipoHabitacion', tipoHabitacion),
     knex.schema.createTable('habitacion', habitacion),
+    knex.schema.createTable('proforma', function (table){
+      table.increments('idProforma').primary();
+      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
+      table.integer('dias');
+      table.string('nombre').notNullable();
+      table.string('documentoIdentidad').notNullable();
+    }),
+    knex.schema.createTable('detalleProforma', detalleProforma),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
     knex.schema.createTable('boletaHabitacion', function (table){
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
+      table.datetime('fechaRealizacion').defaultTo();
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
     } ),

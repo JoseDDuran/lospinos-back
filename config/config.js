@@ -23,7 +23,7 @@ const config = {
     port: '3306',
     database: 'lospinos',
     user: 'root',
-    password: 'password',
+    password: '',
     debugMode: false,
   },
 };
