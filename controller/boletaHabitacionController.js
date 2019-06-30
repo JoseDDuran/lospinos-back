@@ -172,15 +172,15 @@ async function finalizarBoletaHabitacion(req, res){
       .where('estado', true)) || {};
 
     if(_.isEmpty(proforma)){
-      return res.json({ mensaje:'Esta proforma no existe', estado: 400})
+      return res.json({ mensaje:'Esta boleta no existe', estado: 400})
     }
 
-    await db('proforma')
+    await db('boletaHabitacion')
       .update({
-        estado: false
+        estado: 2
       }).where('idProforma', id)
     
-    return res.json({ mensaje: 'Proforma anulada correctamente', estado: 200})
+    return res.json({ mensaje: 'Boleta clausurada correctamente', estado: 200})
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});

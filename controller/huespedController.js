@@ -15,7 +15,7 @@ async function crearHuesped(req, res){
       return res.json({ mensaje: 'Este huesped ya esta registrado en el sistema', estado: 200})
     }
 
-    const huesped = db('usuario').insert({
+    const huesped = await db('huesped').insert({
       nombres,
       apellidos,
       genero,
