@@ -117,7 +117,7 @@ exports.up = async (knex) => {
     knex.schema.createTable('usuario', usuario),
     knex.schema.createTable('habitacion', habitacion),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
-    knex.schema.createTable('boletaHabitacion', function boletaHabitacion(table){
+    knex.schema.createTable('boletaHabitacion', function (table){
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
@@ -128,7 +128,7 @@ exports.up = async (knex) => {
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
     knex.schema.createTable('huesped', huesped),
-    knex.schema.createTable('informe', function informe(table){
+    knex.schema.createTable('informe', function (table){
       table.increments('idInforme').primary();
       table.text('descripcion');
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -136,7 +136,7 @@ exports.up = async (knex) => {
       table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
     
     }),
-    knex.schema.createTable('boletaConsumo', function boletaConsumo(table){
+    knex.schema.createTable('boletaConsumo', function (table){
       table.increments('idBoletaConsumo').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
       table.integer('idBoletaHabitacion').unsigned().notNullable();
@@ -146,7 +146,7 @@ exports.up = async (knex) => {
     knex.schema.createTable('detalleBoletaConsumo', detalleBoletaConsumo),
     knex.schema.createTable('producto', producto),
     knex.schema.createTable('categoria', categoria),
-    knex.schema.createTable('reembolso', function reembolso(table){
+    knex.schema.createTable('reembolso', function (table){
       table.increments('idReembolso').primary();
       table.text('descripcion').notNullable();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -165,7 +165,7 @@ exports.down = async (knex) => {
     knex.schema.createTable('usuario', usuario),
     knex.schema.createTable('habitacion', habitacion),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),
-    knex.schema.createTable('boletaHabitacion', function boletaHabitacion(table){
+    knex.schema.createTable('boletaHabitacion', function (table){
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
@@ -176,7 +176,7 @@ exports.down = async (knex) => {
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
     knex.schema.createTable('huesped', huesped),
-    knex.schema.createTable('informe', function informe(table){
+    knex.schema.createTable('informe', function (table){
       table.increments('idInforme').primary();
       table.text('descripcion');
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -184,7 +184,7 @@ exports.down = async (knex) => {
       table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
     
     }),
-    knex.schema.createTable('boletaConsumo', function boletaConsumo(table){
+    knex.schema.createTable('boletaConsumo', function (table){
       table.increments('idBoletaConsumo').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
       table.integer('idBoletaHabitacion').unsigned().notNullable();
@@ -193,7 +193,7 @@ exports.down = async (knex) => {
     knex.schema.createTable('detalleBoletaConsumo', detalleBoletaConsumo),
     knex.schema.createTable('producto', producto),
     knex.schema.createTable('categoria', categoria),
-    knex.schema.createTable('reembolso', function reembolso(table){
+    knex.schema.createTable('reembolso', function (table){
       table.increments('idReembolso').primary();
       table.text('descripcion').notNullable();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
