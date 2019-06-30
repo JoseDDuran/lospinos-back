@@ -67,12 +67,12 @@ async function guardarProforma(req, res) {
         .then(trx.commit)
         .catch(trx.rollback);
     })
-      .then((inserts) => {
-        return res.json({ message: 'Proforma creada correctamente' , status: 200, idProforma: proforma[0] });
-      })
-      .catch((error) => {
-        return res.json({ message: 'Error al crear la proforma', status: 400});
-      });
+    .then((inserts) => {
+      return res.json({ message: 'Proforma creada correctamente' , status: 200, idProforma: proforma[0] });
+    })
+    .catch((error) => {
+      return res.json({ message: 'Error al crear la proforma', status: 400});
+    });
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
@@ -126,27 +126,17 @@ async function anularProforma(req, res) {
     const proforma = await db.first('*').from('proforma')
       .where('idProforma', id)
       .where('estado', true);
-  
-    const detalleProforma = habitaciones.map(hab => {
-      return {
-        idHabitacion: hab.idHabitacion,
-        idProforma: proforma[0],
-      }
-    });
 
-    db.transaction((trx) => {
-      db.insert(detalleProforma)
-        .into('detalleProforma')
-        .transacting(trx)
-        .then(trx.commit)
-        .catch(trx.rollback);
-    })
-      .then((inserts) => {
-        return res.json({ message: 'Proforma creada correctamente' , status: 200, idProforma: proforma[0] });
-      })
-      .catch((error) => {
-        return res.json({ message: 'Error al crear la proforma', status: 400});
-      });
+    if(proforma.length === 0){
+      return res.json({ mensaje:'Esta proforma no existe', estado: 400})
+    }
+  
+    await db('proforma')
+      .update({
+        estado: false
+      }).where('idProforma', id)
+    
+    return res.json({ mensaje: 'Proforma anulada correctamente', estado: 200})
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
@@ -155,4 +145,5 @@ async function anularProforma(req, res) {
 
 module.exports = {
     guardarProforma,
+    anularProforma
 };

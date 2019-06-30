@@ -31,6 +31,35 @@ async function inicioSesion(req, res) {
   }
 }
 
+async function cambiarContrasena(req, res){
+  const { db } = req.app;
+  const { id } = req.params;
+  const { contrasena } = req.body; 
+  try {
+    const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
+
+    if(usuarioBusqueda.length === 0){
+      return res.json({ mensaje: 'Este usuario no existe', estado: 400})
+    }
+
+    await db('usuario')
+        .update({
+          nombres,
+          apellidos,
+          genero,
+          correo,
+          documentoIdentidad,
+          contrasena,
+          idRol
+        }).where('idUsuario', id);
+
+    return res.json({ mensaje: 'Usuario Editado correctamente', estado:200});
+  } catch (error) {
+    const errorMessage = handleError(error);
+    return res.json({errorMessage, estado: 500});
+  }
+}
+
 async function crearUsuario(req, res){
   const { nombres, apellidos, genero, correo, documentoIdentidad, contrasena, idRol } = req.body; 
   const { db } = req.app;
@@ -141,5 +170,6 @@ module.exports = {
   editarUsuario,
   listarUsuario,
   deshabilitarUsuario,
-  habilitarUsuario
+  habilitarUsuario,
+  cambiarContrasena,
 };

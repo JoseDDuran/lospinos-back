@@ -49,8 +49,7 @@ const usuarios = [
     correo: 'jose.com',
     documentoIdentidad: '75089125',
     contrasena: '123456',
-    idRol: 1,
-    estado: 1
+    idRol: 1
   }
 ];
 

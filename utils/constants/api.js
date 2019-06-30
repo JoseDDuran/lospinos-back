@@ -1,4 +1,3 @@
-// Aqui es se pone un mapeo de todos los endpoints del proyecto
 const publicRoutes = [];
 const protectedRoutes = [
     '/usuario/agregar',
@@ -7,10 +6,15 @@ const protectedRoutes = [
     '/usuario/habilitar',
     '/usuario/',
 
-    '/producto/',
+    '/producto/',   
     '/producto/categorias',
 
-    '/habitacion/'
+    '/habitacion/',
+
+    '/proforma/agregar',
+    '/proforma/anular',
+
+    '/huesped/',
 ];
 const mixedRoutes = [];
 

@@ -15,7 +15,8 @@ function usuario(table){
   table.string('contrasena').notNullable();
   table.integer('idRol').unsigned().notNullable();
   table.foreign('idRol').references('idRol').inTable('rol');
-  table.boolean('estado');
+  table.boolean('estado').defaultTo(1);
+  table.boolean('flagcontrasena').defaultTo(1); 
 }
 
 function proforma(table){
@@ -86,6 +87,7 @@ function huesped(table){
   table.string('apellidos', 60).notNullable();
   table.enu('genero', ['Masculino', 'Femenino']).notNullable();
   table.integer('edad').notNullable();
+  table.string('documentoIdentidad').unique();
 }
 
 function informe(table){
