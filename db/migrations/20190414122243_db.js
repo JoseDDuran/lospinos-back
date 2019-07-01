@@ -161,6 +161,7 @@ exports.up = async (knex) => {
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
       table.date('fechaRealizacion').defaultTo();
+      table.float('monto');
       table.integer('dias');
       table.date('fechaFin');
     }),
@@ -220,9 +221,10 @@ exports.down = async (knex) => {
       table.increments('idBoletaHabitacion').primary();
       table.integer('idEstadoBoletaHabitacion').unsigned().notNullable();
       table.foreign('idEstadoBoletaHabitacion').references('idEstadoBoletaHabitacion').inTable('estadoBoletaHabitacion');
-      table.datetime('fechaRealizacion').defaultTo();
-      table.string('nombre').notNullable();
-      table.string('documentoIdentidad').notNullable();
+      table.date('fechaRealizacion').defaultTo();
+      table.float('monto');
+      table.integer('dias');
+      table.date('fechaFin');
     } ),
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
