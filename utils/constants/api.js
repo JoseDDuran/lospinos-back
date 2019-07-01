@@ -17,8 +17,12 @@ const protectedRoutes = [
     '/proforma/agregar',
     '/proforma/anular',
     '/proforma/procesar',
+    '/proforma/buscar',
+    '/proforma/caducar',
 
     '/huesped/',
+
+    '/consumo/',
 ];
 const mixedRoutes = [];
 

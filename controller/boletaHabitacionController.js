@@ -192,4 +192,5 @@ module.exports = {
     anularProforma,
     procesarProforma,
     buscarBoletaHabitacion,
+    finalizarBoletaHabitacion,
 };
