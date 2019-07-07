@@ -97,7 +97,8 @@ async function editarUsuario(req, res){
     if(_.isEmpty(usuarioBusqueda)){
       return res.json({ mensaje: 'Este usuario no existe', estado: 400})
     }
-
+    console.log(usuarioBusqueda);
+    console.log(req.body);  
     await db('usuario')
         .update({
           nombres,
@@ -119,7 +120,7 @@ async function editarUsuario(req, res){
 async function listarUsuario(req, res){
   const { db } = req.app;
   try {
-    const usuarios = await db.select('*').from('usuario').where('estado', true);
+    const usuarios = await db.select('*').from('usuario');
     return res.json(usuarios);
   } catch (error) {
     const errorMessage = handleError(error);
