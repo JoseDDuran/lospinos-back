@@ -38,7 +38,7 @@ async function cambiarContrasena(req, res){
   try {
     const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
 
-    if(usuarioBusqueda.length === 0){
+    if(_.isEmpty(usuarioBusqueda)){
       return res.json({ mensaje: 'Este usuario no existe', estado: 400})
     }
 
@@ -60,13 +60,13 @@ async function crearUsuario(req, res){
   const { db } = req.app;
   try {
 
-    const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('correo', correo);
+    const usuarioBusqueda = await (db.first('idUsuario').from('usuario').where('correo', correo)) || {};
     
-    if(usuarioBusqueda.length === 0){
+    if(!_.isEmpty(usuarioBusqueda)){
       return res.json({ mensaje: 'Este correo ya esta registrado con usuario', estado: 400})
     }
 
-    const usuario = db('usuario').insert({
+    const usuario = await db('usuario').insert({
       nombres,
       apellidos,
       genero,
@@ -92,9 +92,9 @@ async function editarUsuario(req, res){
   const { nombres, apellidos, genero, correo, documentoIdentidad, contrasena, idRol } = req.body; 
   try {
 
-    const usuarioBusqueda = await db.first('idUsuario').from('usuario').where('idUsuario', id);
+    const usuarioBusqueda = await (db.first('idUsuario').from('usuario').where('idUsuario', id)) || {};
     
-    if(usuarioBusqueda.length === 0){
+    if(_.isEmpty(usuarioBusqueda)){
       return res.json({ mensaje: 'Este usuario no existe', estado: 400})
     }
 

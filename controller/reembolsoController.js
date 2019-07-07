@@ -7,7 +7,7 @@ async function solicitarReembolso(req, res) {
   const { descripcion, idBoletaHabitacion } = req.body;
   try {
     const reembolso = await db('reembolso').insert({
-        nombres,
+        descripcion,
         apellidos,
       });
     const productos = await db.select('*').from('producto');

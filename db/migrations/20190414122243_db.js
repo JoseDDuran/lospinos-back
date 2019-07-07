@@ -53,8 +53,8 @@ function habitacion(table){
 
 function detalleBoletaHabitacion(table){
   table.increments('idDetalleBoletaHabitacion').primary();
-  table.integer('idHabitacion').unsigned().notNullable();
-  table.foreign('idHabitacion').references('idHabitacion').inTable('habitacion');
+  table.integer('idHuesped').unsigned().notNullable();
+  table.foreign('idHuesped').references('idHuesped').inTable('huesped');
   table.integer('idBoletaHabitacion').unsigned().notNullable();
   table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
   table.boolean('representante');

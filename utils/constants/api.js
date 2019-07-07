@@ -2,8 +2,8 @@ const publicRoutes = [];
 const protectedRoutes = [
     '/usuario/agregar',
     '/usuario/editar',
-    '/usuario/deshabilitar',
-    '/usuario/habilitar',
+    '/usuario/deshabilitar/:id',
+    '/usuario/habilitar/:id',
     '/usuario/',
     '/usuario/asignacioncontrasena',
     '/usuario/contrasena',
@@ -21,6 +21,7 @@ const protectedRoutes = [
     '/proforma/caducar',
 
     '/huesped/',
+    '/huesped/:id',
 
     '/consumo/',
 ];

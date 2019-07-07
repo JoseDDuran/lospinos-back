@@ -83,7 +83,7 @@ async function procesarProforma(req, res){
 
     const boletaHabitacion = await db('boletaHabitacion').insert({
       fechaRealizacion,
-      dias: proforma.dias,
+      dias: proforma.dias,  
       monto: proforma.monto,
       idEstadoBoletaHabitacion: 1,
       fechaFin,
@@ -94,7 +94,7 @@ async function procesarProforma(req, res){
     });
 
     if(boletaHabitacion.length === 0){
-      return res.json({ mensaje:'Error al crear la boleta', estado: 400})
+      return res.json({ mensaje:'Error al crear la boleta' , estado: 400})
     }
     
     const representante = huespedes[0];
@@ -103,13 +103,13 @@ async function procesarProforma(req, res){
         return {
           idHuesped: hue.idHuesped,
           idBoletaHabitacion: boletaHabitacion[0],
-          representante: 1,
+          representante: true,
         }
       } else {
         return {
           idHuesped: hue.idHuesped,
           idBoletaHabitacion: boletaHabitacion[0],
-          representante: 0,
+          representante: false,
         }
       }
     });
@@ -122,13 +122,12 @@ async function procesarProforma(req, res){
         .catch(trx.rollback);
     })
     .then((inserts) => {
-      return res.json({ message: 'Boleta creada correctamente' , status: 200, idProforma: proforma[0] });
+      return res.json({ message: 'Boleta creada correctamente' , status: 200 });
     })
     .catch((error) => {
-      return res.json({ message: 'Error al crear la boleta', status: 400});
+      return res.json({ message: 'Error al crear la boleta', status: 400, error});
     });
     
-    return res.json({ mensaje: 'Boleta creada correctamente', estado: 200})
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});

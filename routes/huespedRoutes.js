@@ -3,7 +3,7 @@ const huespedController = require('../controller/huespedController');
 
 const Router = express.Router();
 
-Router.post('/', huespedController.crearHuesped);
+Router.post('/', huespedController.crearHuespedUno);
 Router.get('/:id', huespedController.buscarHuesped);
 
 module.exports = Router;
