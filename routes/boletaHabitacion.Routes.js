@@ -7,7 +7,8 @@ const Router = express.Router();
 Router.post('/agregar', proformaController.guardarProforma);
 Router.post('/anular/:id', proformaController.anularProforma);
 Router.post('/procesar/:id', proformaController.procesarProforma);
-Router.post('/buscar', boletaHabitacionControllers.buscarBoletaHabitacion);
+Router.get('/:documentoIdentidad', boletaHabitacionControllers.buscarBoletaHabitacion);
+Router.post('/buscar', boletaHabitacionControllers.buscarBoletaConsumoYDetalle);
 Router.post('/caducar/:id', boletaHabitacionControllers.finalizarBoletaHabitacion);
 
 module.exports = Router;

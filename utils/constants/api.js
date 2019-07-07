@@ -19,6 +19,7 @@ const protectedRoutes = [
     '/proforma/procesar',
     '/proforma/buscar',
     '/proforma/caducar',
+    '/proforma/:documentoIdentidad',
 
     '/huesped/',
     '/huesped/:id',
