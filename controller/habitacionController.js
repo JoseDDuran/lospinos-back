@@ -57,9 +57,34 @@ async function listarHabitacionPorCategoria(req, res){
 async function listarTodasHabitaciones(req,res){
   const { db } = req.app;
   try { 
-   const habitaciones = await db.select('*').from('habitacion')
+   const habitacionesBusqueda = await db.select('*').from('habitacion')
     .whereNot({
       estadoHabitacion: 'Inactivo' 
+    });
+
+    const habitaciones = habitacionesBusqueda.map((hab) => {
+      if(hab.inicio_limpieza){
+        const now = moment().format();
+        const then = hab.inicio_limpieza;
+        const restante = moment.utc(moment(now, 'YYYY-MM-DD HH:mm:ss')
+          .diff(moment(then,'YYYY-MM-DD HH:mm:ss' ))).format('HH:mm:ss');
+          return {
+            idHabitacion: hab.idHabitacion,
+            nombre: hab.nombre,
+            precio: hab.precio,
+            idTipoHabitacion: hab.idTipoHabitacion,
+            limpieza: restante
+          }
+      } else {
+        return {
+          idHabitacion: hab.idHabitacion,
+          nombre: hab.nombre,
+          precio: hab.precio,
+          idTipoHabitacion: hab.idTipoHabitacion,
+          limpieza: 'Sin tiempo de espera'
+        }
+      }
+      
     });
     return res.json({habitaciones, estado: 200 });
   } catch (error) {

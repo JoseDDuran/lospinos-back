@@ -49,6 +49,8 @@ function habitacion(table){
   table.enu('estadoHabitacion', ['Activo', 'Inactivo', 'En limpieza']).defaultTo('Activo');
   table.integer('idTipoHabitacion').unsigned().notNullable();
   table.foreign('idTipoHabitacion').references('idTipoHabitacion').inTable('tipoHabitacion');
+  table.datetime('inicio_limpieza');
+  table.datetime('fin_limpieza');
 }
 
 function detalleBoletaHabitacion(table){

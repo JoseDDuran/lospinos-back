@@ -158,10 +158,11 @@ async function procesarProforma(req, res){
         estado : 2
       }).where('idProforma', proforma.idProforma);
 
-      const habitaciones = await (db.select('idHabitacion').from('detalleProforma').where('idProforma', id)) || {};
+      const habitaciones = await (db.select('idHabitacion').from('detalleProforma')
+        .where('idProforma', id)) || {};
       await Promise.all(habitaciones.map(async (hab) => {
         await db('habitacion').update({
-          estadoHabitacion: 'Inactivo'
+          estadoHabitacion: 'Inactivo',
         }).where('idHabitacion', hab.idHabitacion);
       }));
       return res.json({ message: 'Boleta creada correctamente' , status: 200 });
