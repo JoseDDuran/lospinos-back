@@ -57,7 +57,10 @@ async function listarHabitacionPorCategoria(req, res){
 async function listarTodasHabitaciones(req,res){
   const { db } = req.app;
   try { 
-   const habitaciones = await db.select('*').from('habitacion');
+   const habitaciones = await db.select('*').from('habitacion')
+    .whereNot({
+      estadoHabitacion: 'Inactivo' 
+    });
     return res.json({habitaciones, estado: 200 });
   } catch (error) {
     const errorMessage = handleError(error);
