@@ -126,9 +126,7 @@ async function procesarProforma(req, res){
 
 
     if(boletaHabitacion.length === 0) {
-      await db('proforma').update({
-        estado : 3
-      }).where('idProforma', proforma.idProforma);
+      return res.json({ mensaje: 'Error al crear boleta habitacion' , estado: 400 })
     }
 
     const representante = huespedes[0];
@@ -156,6 +154,9 @@ async function procesarProforma(req, res){
         .catch(trx.rollback);
     })
     .then((inserts) => {
+      await db('proforma').update({
+        estado : 2
+      }).where('idProforma', proforma.idProforma);
       return res.json({ message: 'Boleta creada correctamente' , status: 200 });
     })
     .catch((error) => {
