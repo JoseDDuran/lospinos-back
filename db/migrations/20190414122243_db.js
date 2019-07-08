@@ -95,14 +95,6 @@ function huesped(table){
   table.string('documentoIdentidad').unique();
 }
 
-function informe(table){
-  table.increments('idInforme').primary();
-  table.text('descripcion');
-  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-  table.integer('idBoletaHabitacion').unsigned().notNullable();
-  table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-}
-
 function boletaConsumo(table){
   table.increments('idBoletaConsumo').primary();
   table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -129,16 +121,6 @@ function producto(table){
 function categoria(table){
   table.increments('idCategoria').primary();
   table.string('nombre');
-}
-
-function reembolso(table){
-  table.increments('idReembolso').primary();
-  table.text('descripcion').notNullable();
-  table.float('monto');
-  table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-  table.integer('idBoletaHabitacion').unsigned().notNullable();
-  table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-  table.boolean('estado').defaultTo(1);
 }
 
 exports.up = async (knex) => {
@@ -172,14 +154,6 @@ exports.up = async (knex) => {
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
     knex.schema.createTable('huesped', huesped),
-    knex.schema.createTable('informe', function (table){
-      table.increments('idInforme').primary();
-      table.text('descripcion');
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-      table.integer('idBoletaHabitacion').unsigned().notNullable();
-      table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-    
-    }),
     knex.schema.createTable('boletaConsumo', function (table){
       table.increments('idBoletaConsumo').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -190,15 +164,6 @@ exports.up = async (knex) => {
     knex.schema.createTable('detalleBoletaConsumo', detalleBoletaConsumo),
     knex.schema.createTable('producto', producto),
     knex.schema.createTable('categoria', categoria),
-    knex.schema.createTable('reembolso', function (table){
-      table.increments('idReembolso').primary();
-      table.text('descripcion').notNullable();
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-      table.integer('idBoletaHabitacion').unsigned().notNullable();
-      table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-      table.boolean('estado');
-    }
-    )
   ]);
 };
 
@@ -235,14 +200,6 @@ exports.down = async (knex) => {
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
     knex.schema.createTable('huesped', huesped),
-    knex.schema.createTable('informe', function (table){
-      table.increments('idInforme').primary();
-      table.text('descripcion');
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-      table.integer('idBoletaHabitacion').unsigned().notNullable();
-      table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-    
-    }),
     knex.schema.createTable('boletaConsumo', function (table){
       table.increments('idBoletaConsumo').primary();
       table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
@@ -252,15 +209,6 @@ exports.down = async (knex) => {
     knex.schema.createTable('detalleBoletaConsumo', detalleBoletaConsumo),
     knex.schema.createTable('producto', producto),
     knex.schema.createTable('categoria', categoria),
-    knex.schema.createTable('reembolso', function (table){
-      table.increments('idReembolso').primary();
-      table.text('descripcion').notNullable();
-      table.datetime('fechaRealizacion').defaultTo(knex.fn.now());
-      table.integer('idBoletaHabitacion').unsigned().notNullable();
-      table.foreign('idBoletaHabitacion').references('idBoletaHabitacion').inTable('boletaHabitacion');
-      table.boolean('estado');
-    }
-    ),
     knex.raw('SET foreign_key_checks = 1;'),
   ]);
 };

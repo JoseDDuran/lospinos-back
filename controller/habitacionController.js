@@ -57,12 +57,12 @@ async function listarHabitacionPorCategoria(req, res){
 async function listarTodasHabitaciones(req,res){
   const { db } = req.app;
   try { 
-   const habitacionesBusqueda = await db.select('*').from('habitacion')
+   const habitaciones = await db.select('*').from('habitacion')
     .whereNot({
       estadoHabitacion: 'Inactivo' 
     });
 
-    const habitaciones = habitacionesBusqueda.map((hab) => {
+    /*const habitaciones = habitacionesBusqueda.map((hab) => {
       if(hab.inicio_limpieza){
         const now = moment().format();
         const then = hab.inicio_limpieza;
@@ -85,8 +85,8 @@ async function listarTodasHabitaciones(req,res){
         }
       }
       
-    });
-    return res.json({habitaciones, estado: 200 });
+    });*/
+    return res.json({ habitaciones, estado: 200 });
   } catch (error) {
     const errorMessage = handleError(error);
     return res.json({ errorMessage, estado: 500 });

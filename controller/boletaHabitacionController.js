@@ -82,8 +82,7 @@ async function finalizarBoletaHabitacion(req, res){
     const habitaciones = await db.select('idHabitacion').from('detalleProforma').where('idProforma', id) ;
       await Promise.all(habitaciones.map(async (hab) => {
         await db('habitacion').update({
-          estadoHabitacion: 'En limpieza',
-          inicio_limpieza: moment().format()
+          estadoHabitacion: 'En limpieza'
         }).where('idHabitacion', hab.idHabitacion);
       }));
     
