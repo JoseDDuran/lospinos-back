@@ -164,6 +164,8 @@ exports.up = async (knex) => {
       table.float('monto');
       table.integer('dias');
       table.date('fechaFin');
+      table.integer('idProforma').unsigned().notNullable();
+      table.foreign('idProforma').references('idProforma').inTable('proforma'); 
     }),
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),
@@ -225,6 +227,8 @@ exports.down = async (knex) => {
       table.float('monto');
       table.integer('dias');
       table.date('fechaFin');
+      table.integer('idProforma').unsigned().notNullable();
+      table.foreign('idProforma').references('idProforma').inTable('proforma');
     } ),
     knex.schema.createTable('estadoBoletaHabitacion', estadoBoletaHabitacion),
     knex.schema.createTable('huespedHabitacion', huespedHabitacion),

@@ -67,19 +67,19 @@ async function anularProforma(req, res) {
   }
 }
 
-function asignarHuespedHabitacion(huespedes){
+function asignarHuespedHabitacion(huespedes, boletaHabitacion){
   const representante = huespedes[0];
     const detalleBoletaHabitacion = huespedes.map(hue => {
       if(hue.idHuesped === representante.idHuesped){
         return {
           idHuesped: hue.idHuesped,
-          idBoletaHabitacion: boletaHabitacion[0],
+          idBoletaHabitacion,
           representante: true,
         }
       } else {
         return {
           idHuesped: hue.idHuesped,
-          idBoletaHabitacion: boletaHabitacion[0],
+          idBoletaHabitacion,
           representante: false,
         }
       }
@@ -121,7 +121,9 @@ async function procesarProforma(req, res){
       monto: proforma.monto,
       idEstadoBoletaHabitacion: 1,
       fechaFin,
+      idProforma: id,
     });
+
 
     if(boletaHabitacion.length === 0) {
       await db('proforma').update({
@@ -129,8 +131,8 @@ async function procesarProforma(req, res){
       }).where('idProforma', proforma.idProforma);
     }
 
-
-    asignarHuespedHabitacion(huespedes);
+    
+    asignarHuespedHabitacion(huespedes, boletaHabitacion[0]);
    
   } catch (error) {
     const errorMessage = handleError(error);
