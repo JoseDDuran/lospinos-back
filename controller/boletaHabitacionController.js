@@ -78,11 +78,18 @@ async function finalizarBoletaHabitacion(req, res){
       .update({
         idEstadoBoletaHabitacion: 2
       }).where('idBoletaHabitacion', id)
+
+    const habitaciones = await (db.select('idHabitacion').from('detalleProforma').where('idProforma', id)) || {};
+      await Promise.all(habitaciones.map(async (hab) => {
+        await db('habitacion').update({
+          estadoHabitacion: 'En limpieza'
+        }).where('idHabitacion', hab.idHabitacion);
+      }));
     
     return res.json({ mensaje: 'Boleta clausurada correctamente', estado: 200})
   } catch (error) {
     const errorMessage = handleError(error);
-    return res.json({errorMessage, estado: 500});
+    return res.json({ errorMessage, estado: 500});
   }
 }
 
