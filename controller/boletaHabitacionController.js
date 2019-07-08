@@ -25,6 +25,11 @@ async function buscarBoletaConsumoYDetalle(req, res){
         .innerJoin('detalleBoletaConsumo AS dbc', 'dbc.idBoletaConsumo', 'bc.idBoletaConsumo')
         .where('bc.idBoletaHabitacion', boletaHabitacion.idBoletaHabitacion)) || [];
 
+      if(detalleBoletaConsumo.length === 0){
+        const boletaConsumo = await db('boletaConsumo').insert({
+          idBoletaHabitacion: boletaHabitacion.idBoletaHabitacion
+        });
+      }
       const representante = boletaHabitacion.nombres +' '+ boletaHabitacion.apellidos;
       return res.json({ detalleBoletaConsumo, representante, idBoletaConsumo: boletaHabitacion.idBoletaHabitacion, estado: 200 });
   } catch(error){

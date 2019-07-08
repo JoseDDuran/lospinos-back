@@ -129,9 +129,6 @@ async function procesarProforma(req, res){
       }).where('idProforma', proforma.idProforma);
     }
 
-    const boletaConsumo = await db('boletaConsumo').insert({
-      idBoletaHabitacion: boletaHabitacion[0]
-    });
 
     asignarHuespedHabitacion(huespedes);
    
@@ -169,7 +166,7 @@ async function buscarProforma(req, res){
     if(_.isEmpty(proforma)){
       return res.json({ mensaje: 'No hay proformas pendientes', estado: 400 })
     }
-    return res.json({ ultimaProforma, estado: 200 });
+    return res.json({ proforma, estado: 200 });
 
   } catch(error){
     const errorMessage = handleError(error);

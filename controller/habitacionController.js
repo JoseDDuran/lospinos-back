@@ -44,7 +44,7 @@ async function listarHabitacionPorCategoria(req, res){
   const { idCategoria } = req.params;
   try {
     const habitaciones = await db.select('*').from('habitacion')
-        .where('idTipoHabitacion', idCategoria);
+        .where('idTipoHabitacion', idCategoria)
 
     return res.json({ habitaciones, estado : 200 });
   } catch(error){
