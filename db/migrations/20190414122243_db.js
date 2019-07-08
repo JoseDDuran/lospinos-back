@@ -152,7 +152,7 @@ exports.up = async (knex) => {
       table.float('monto');
       table.string('nombre').notNullable();
       table.string('documentoIdentidad').notNullable();
-      table.boolean('estado').defaultTo(1);
+      table.integer('estado').defaultTo(1);
     }),
     knex.schema.createTable('detalleProforma', detalleProforma),
     knex.schema.createTable('detalleBoletaHabitacion', detalleBoletaHabitacion),

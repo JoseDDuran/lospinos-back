@@ -20,6 +20,7 @@ const protectedRoutes = [
     '/proforma/buscar',
     '/proforma/caducar',
     '/proforma/:documentoIdentidad',
+    '/proforma/pendientes',
 
     '/huesped/',
     '/huesped/:id',

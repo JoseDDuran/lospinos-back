@@ -7,14 +7,14 @@ async function generarBoletaConsumo(req, res){
     const { db } = req.app;
     const { documentoIdentidad, detalles } = req.body;
     try {
-      const boletaHabitacion = await (db.first('db.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
+      const boletaHabitacion = await (db.first('db.idBoletaHabitacion', 'hu.nombres',
+       'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
       .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
       .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
       .where('hu.documentoIdentidad', documentoIdentidad)
       .where('dbh.representante', true)
       .where('db.idEstadoBoletaHabitacion', 1)) || {};
 
-      //console.log(boletaHabitacion)
       if(_.isEmpty(boletaHabitacion)){
           return res.json({ mensaje: 'No hay boleta actual generada con este documento de identidad', estado: 200 })
       }

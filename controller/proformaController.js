@@ -2,6 +2,7 @@ const { handleError } = require('../utils/helpers/expressHelper');
 const jwt = require('../utils/jwt');
 const moment = require('moment');
 const _ = require('lodash');
+const knexnest = require('knexnest');
 
 async function guardarProforma(req, res) {
   const { monto, dias, documentoIdentidad, nombre, habitaciones } = req.body; 
@@ -48,7 +49,7 @@ async function anularProforma(req, res) {
     
     const proforma = await (db.first('*').from('proforma')
       .where('idProforma', id)
-      .where('estado', true)) || { };
+      .where('estado', 1)) || { };
 
     if(_.isEmpty(proforma)){
       return res.json({ mensaje:'Esta proforma no existe', estado: 400})
@@ -56,7 +57,7 @@ async function anularProforma(req, res) {
 
     await db('proforma')
       .update({
-        estado: false
+        estado: 0
       }).where('idProforma', id)
     
     return res.json({ mensaje: 'Proforma anulada correctamente', estado: 200})
@@ -66,38 +67,8 @@ async function anularProforma(req, res) {
   }
 }
 
-async function procesarProforma(req, res){
-  const { id } = req.params; 
-  const { db } = req.app;
-  const { huespedes } = req.body;
-  try {
-    const proforma = await db.first('*').from('proforma')
-      .where('idProforma', id)
-      .where('estado', true);
-
-    if(proforma.length === 0){
-      return res.json({ mensaje: 'Esta proforma no existe', estado: 400 });
-    }
-    const fechaRealizacion = moment(proforma.fechaRealizacion).format('YYYY-MM-DD');
-    const fechaFin = moment(fechaRealizacion).add(proforma.dias, 'days').format('YYYY-MM-DD');
-
-    const boletaHabitacion = await db('boletaHabitacion').insert({
-      fechaRealizacion,
-      dias: proforma.dias,  
-      monto: proforma.monto,
-      idEstadoBoletaHabitacion: 1,
-      fechaFin,
-    });
-
-    const boletaConsumo = await db('boletaConsumo').insert({
-      idBoletaHabitacion: boletaHabitacion[0]
-    });
-
-    if(boletaHabitacion.length === 0){
-      return res.json({ mensaje:'Error al crear la boleta' , estado: 400})
-    }
-    
-    const representante = huespedes[0];
+function asignarHuespedHabitacion(huespedes){
+  const representante = huespedes[0];
     const detalleBoletaHabitacion = huespedes.map(hue => {
       if(hue.idHuesped === representante.idHuesped){
         return {
@@ -127,8 +98,80 @@ async function procesarProforma(req, res){
     .catch((error) => {
       return res.json({ message: 'Error al crear la boleta', status: 400, error});
     });
-    
+}
+
+async function procesarProforma(req, res){
+  const { id } = req.params; 
+  const { db } = req.app;
+  const { huespedes } = req.body;
+  try {
+    const proforma = await db.first('*').from('proforma')
+      .where('idProforma', id)
+      .where('estado', 1);
+
+    if(proforma.length === 0){
+      return res.json({ mensaje: 'Esta proforma no existe', estado: 400 });
+    }
+    const fechaRealizacion = moment(proforma.fechaRealizacion).format('YYYY-MM-DD');
+    const fechaFin = moment(fechaRealizacion).add(proforma.dias, 'days').format('YYYY-MM-DD');
+
+    const boletaHabitacion = await db('boletaHabitacion').insert({
+      fechaRealizacion,
+      dias: proforma.dias,  
+      monto: proforma.monto,
+      idEstadoBoletaHabitacion: 1,
+      fechaFin,
+    });
+
+    if(boletaHabitacion.length === 0) {
+      await db('proforma').update({
+        estado : 3
+      }).where('idProforma', proforma.idProforma);
+    }
+
+    const boletaConsumo = await db('boletaConsumo').insert({
+      idBoletaHabitacion: boletaHabitacion[0]
+    });
+
+    asignarHuespedHabitacion(huespedes);
+   
   } catch (error) {
+    const errorMessage = handleError(error);
+    return res.json({errorMessage, estado: 500});
+  }
+}
+
+async function buscarProforma(req, res){
+  const { db } = req.app;
+  try {
+    const proforma = await (knexnest(
+      db
+        .select(
+          'P.idProforma AS idProforma ',
+          'P.fechaRealizacion AS fechaRealizacion',
+          'P.dias AS dias',
+          'P.monto AS monto',
+          'P.nombre AS nombre',
+          'P.documentoIdentidad AS documentoIdentidad',
+          'P.estado AS estado',
+          'H.idHabitacion AS detalle__idHabitacion',
+          'H.nombre AS detalle__nombre',
+          'H.precio AS detalle__precio',
+          'H.estadoHabitacion AS detalle__estadoHabitacion',
+          'H.idTipoHabitacion AS detalle__idTipoHabitacion'
+        )
+        .from('proforma AS P')
+        .innerJoin('detalleProforma AS DP', 'P.idProforma', 'DP.idProforma')
+        .innerJoin('habitacion AS H', 'H.idHabitacion', 'DP.idHabitacion')
+        .where('P.estado', 1)
+    ) ) || []; 
+
+    if(_.isEmpty(proforma)){
+      return res.json({ mensaje: 'No hay proformas pendientes', estado: 400 })
+    }
+    return res.json({ ultimaProforma, estado: 200 });
+
+  } catch(error){
     const errorMessage = handleError(error);
     return res.json({errorMessage, estado: 500});
   }
@@ -139,4 +182,5 @@ module.exports = {
     guardarProforma,
     anularProforma,
     procesarProforma,
+    buscarProforma,
 };

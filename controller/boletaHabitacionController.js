@@ -7,7 +7,8 @@ async function buscarBoletaConsumoYDetalle(req, res){
   const { db } = req.app;
   const { documentoIdentidad } = req.body;
   try {
-      const boletaHabitacion = await (db.first('db.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos', 'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
+      const boletaHabitacion = await (db.first('db.idBoletaHabitacion', 'hu.nombres', 'hu.apellidos',
+       'hu.documentoIdentidad').from('detalleBoletaHabitacion AS dbh')
       .innerJoin('huesped AS hu', 'hu.idHuesped', 'dbh.idHuesped')
       .innerJoin('boletaHabitacion AS db', 'db.idBoletaHabitacion', 'dbh.idBoletaHabitacion')
       .where('hu.documentoIdentidad', documentoIdentidad)
@@ -24,7 +25,7 @@ async function buscarBoletaConsumoYDetalle(req, res){
         .innerJoin('detalleBoletaConsumo AS dbc', 'dbc.idBoletaConsumo', 'bc.idBoletaConsumo')
         .where('bc.idBoletaHabitacion', boletaHabitacion.idBoletaHabitacion)) || [];
 
-        const representante = boletaHabitacion.nombres +' '+ boletaHabitacion.apellidos;
+      const representante = boletaHabitacion.nombres +' '+ boletaHabitacion.apellidos;
       return res.json({ detalleBoletaConsumo, representante, idBoletaConsumo: boletaHabitacion.idBoletaHabitacion, estado: 200 });
   } catch(error){
       const errorMessage = handleError(error);

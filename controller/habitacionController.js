@@ -28,6 +28,31 @@ async function listarHabitacion(req,res){
   }
 }
 
+async function listarCategorias(req, res){
+  const { db } = req.app;
+  try{
+    const tipoHabitacion = await db.select('*').from('tipohabitacion');
+    return res.json({ tipoHabitacion, estado: 200 });
+  } catch(error){
+    const errorMessage = handleError(error);
+    return res.json({ errorMessage, estado: 500 });
+  }
+}
+
+async function listarHabitacionPorCategoria(req, res){
+  const { db } = req.app;
+  const { idCategoria } = req.params;
+  try {
+    const habitaciones = await db.select('*').from('habitacion')
+        .where('idTipoHabitacion', idCategoria);
+
+    return res.json({ habitaciones, estado : 200 });
+  } catch(error){
+    const errorMessage = handleError(error);
+    return res.json({ errorMessage, estado: 500 });
+  }
+}
+
 
 async function listarTodasHabitaciones(req,res){
   const { db } = req.app;
@@ -42,5 +67,7 @@ async function listarTodasHabitaciones(req,res){
 
 module.exports = {
   listarHabitacion,
-  listarTodasHabitaciones
+  listarTodasHabitaciones,
+  listarCategorias,
+  listarHabitacionPorCategoria
 };
