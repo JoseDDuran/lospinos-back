@@ -131,10 +131,38 @@ async function procesarProforma(req, res){
       }).where('idProforma', proforma.idProforma);
     }
 
-    
-    asignarHuespedHabitacion(db, huespedes, boletaHabitacion[0]);
+    const representante = huespedes[0];
+    const detalleBoletaHabitacion = huespedes.map(hue => {
+      if(hue.idHuesped === representante.idHuesped){
+        return {
+          idHuesped: hue.idHuesped,
+          idBoletaHabitacion: boletaHabitacion[0],
+          representante: true,
+        }
+      } else {
+        return {
+          idHuesped: hue.idHuesped,
+          idBoletaHabitacion: boletaHabitacion[0],
+          representante: false,
+        }
+      }
+    });
 
-    
+    db.transaction((trx) => {
+      db.insert(detalleBoletaHabitacion)
+        .into('detalleBoletaHabitacion')
+        .transacting(trx)
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+    .then((inserts) => {
+      return res.json({ message: 'Boleta creada correctamente' , status: 200 });
+    })
+    .catch((error) => {
+      return res.json({ message: 'Error al crear la boleta', status: 400, error});
+    });
+
+   
    
   } catch (error) {
     const errorMessage = handleError(error);
