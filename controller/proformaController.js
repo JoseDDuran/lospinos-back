@@ -153,7 +153,7 @@ async function procesarProforma(req, res){
         .then(trx.commit)
         .catch(trx.rollback);
     })
-    .then((inserts) => {
+    .then(async (inserts) => {
       await db('proforma').update({
         estado : 2
       }).where('idProforma', proforma.idProforma);
